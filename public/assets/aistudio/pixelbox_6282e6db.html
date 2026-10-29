@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PixelBox · Tus juegos retro en la tele</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070c;--panel:#14141f;--line:#2a2a3d;--ink:#f4f4fa;--dim:#a2a2ba;--blue:#0a9be0;--red:#e8321a;--yellow:#ffc800;--green:#3aaa35;
+--px:'Press Start 2P','Courier New',monospace;--body:'Nunito',system-ui,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:800 16px/1.5 var(--body);min-height:100%}
+main{max-width:1100px;margin:0 auto;padding:0 18px 60px}
+h1,h2,h3{font-family:var(--px);font-weight:400;margin:0}
+:focus-visible{outline:4px solid var(--yellow);outline-offset:3px}
+
+/* hero */
+.hero{text-align:center;padding:44px 0 26px}
+.logo{font-family:var(--px);font-size:clamp(30px,8.5vw,84px);line-height:1.15;letter-spacing:2px;margin:0;
+ -webkit-text-stroke:clamp(5px,1.2vw,10px) #000;paint-order:stroke fill;text-shadow:0 clamp(4px,1vw,9px) 0 #000}
+.logo span:nth-child(5n+1){color:var(--blue)}.logo span:nth-child(5n+2){color:var(--red)}
+.logo span:nth-child(5n+3){color:var(--yellow)}.logo span:nth-child(5n+4){color:var(--green)}.logo span:nth-child(5n){color:#fff}
+.logo i{display:inline-block;width:.5em}
+.tag{font-family:var(--px);font-size:clamp(9px,1.7vw,13px);color:var(--dim);margin-top:26px;line-height:2}
+.coin{margin-top:26px;font-family:var(--px);font-size:clamp(14px,2.6vw,22px);color:var(--yellow);background:#000;border:0;
+ padding:16px 26px;cursor:pointer;box-shadow:0 0 0 4px #fff,0 0 0 8px #000;animation:blink 1.1s steps(2) infinite}
+.coin:hover{background:var(--yellow);color:#000}
+@keyframes blink{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.coin{animation:none}}
+
+/* systems */
+.tabs{display:flex;gap:10px;overflow-x:auto;padding:6px 4px 14px;margin:16px 0 8px;scrollbar-width:thin}
+.tab{flex:0 0 auto;font-family:var(--px);font-size:11px;padding:14px 16px;border:3px solid var(--c);background:var(--panel);color:var(--ink);cursor:pointer}
+.tab[aria-selected=true]{background:var(--c);color:#000}
+.shelf-title{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
+.shelf-title h2{font-size:clamp(13px,2.4vw,18px)}
+.shelf-title p{margin:0;color:var(--dim);font-size:14px}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px}
+.game{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:var(--panel);border:3px solid var(--line);padding:8px;transition:transform .12s,border-color .12s}
+.game:hover,.game:focus-visible{transform:translateY(-6px) scale(1.03);border-color:var(--yellow)}
+.game:focus-visible{outline:4px solid var(--yellow);outline-offset:3px}
+.game svg{display:block;width:100%;height:auto}
+.game b{display:block;font-family:var(--px);font-size:9px;font-weight:400;line-height:1.6;margin-top:10px;min-height:2.9em}
+.game small{color:var(--dim);font-size:12px}
+.note{margin:22px 0 0;padding:14px 16px;border-left:6px solid var(--green);background:var(--panel);font-size:14px;color:var(--dim)}
+
+/* sections */
+section.blk{margin-top:64px}
+section.blk>h2{font-size:clamp(14px,2.8vw,22px);margin-bottom:22px;line-height:1.5}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;background:var(--panel);border:3px solid var(--line);padding:20px;position:relative}
+.steps li::before{content:counter(s);font-family:var(--px);font-size:22px;color:#000;background:var(--yellow);display:inline-block;padding:8px 12px;margin-bottom:12px}
+.steps li:nth-child(2)::before{background:var(--blue)}.steps li:nth-child(3)::before{background:var(--green)}.steps li:nth-child(4)::before{background:var(--red)}
+.steps h3{font-size:12px;line-height:1.6;margin-bottom:8px}.steps p{margin:0;color:var(--dim);font-size:14px}
+
+.faq-head{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.qblock{width:68px;height:68px;background:var(--yellow);border:4px solid #000;display:grid;place-items:center;font-family:var(--px);font-size:34px;color:#fff;text-shadow:3px 3px 0 #000;box-shadow:inset -6px -6px 0 #d49a00}
+details{background:var(--panel);border:3px solid var(--line);margin-bottom:10px}
+summary{cursor:pointer;padding:16px 18px;font-family:var(--px);font-size:11px;line-height:1.7;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+ ";color:var(--yellow)}details[open] summary::before{content:"− "}
+details p{margin:0;padding:0 18px 18px;color:var(--dim);font-size:15px}
+
+/* modal */
+dialog{background:var(--panel);color:var(--ink);border:4px solid var(--yellow);padding:24px;width:min(420px,92vw)}
+dialog::backdrop{background:rgba(0,0,0,.8)}
+dialog h3{font-size:13px;line-height:1.7;margin-bottom:6px}
+.bar{height:22px;border:3px solid #fff;margin:18px 0 8px;background:#000}
+.bar div{height:100%;width:0;background:repeating-linear-gradient(90deg,var(--green) 0 10px,#2b7d28 10px 12px)}
+.msg{font-size:14px;color:var(--dim);margin:0 0 16px;min-height:2.6em}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{font-family:var(--px);font-size:11px;padding:12px 14px;border:3px solid #000;background:var(--yellow);color:#000;cursor:pointer}
+.btn.alt{background:var(--panel);color:var(--ink);border-color:var(--line)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+footer{margin-top:60px;text-align:center;color:var(--dim);font-size:13px}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+  <h1 class="logo" id="logo" aria-label="PixelBox"></h1>
+  <p class="tag">Tus juegos retro en la tele.<br>Instala la app, conecta un mando y juega.</p>
+  <button class="coin" id="coin">INSERT COIN</button>
+</header>
+
+<div class="tabs" role="tablist" id="tabs" aria-label="Sistemas"></div>
+<div class="shelf-title"><h2 id="sysName"></h2><p id="sysInfo"></p></div>
+<div class="grid" id="grid" role="list"></div>
+<p class="note">Los juegos y carátulas de esta página son de ejemplo, con títulos ficticios. En la app real, cada usuario añade sus propios juegos desde un pendrive o una carpeta, o descarga un catálogo con licencia libre.</p>
+
+<section class="blk" id="como">
+  <h2>Cómo instalarla en tu tele</h2>
+  <ol class="steps">
+    <li><h3>Descarga el APK</h3><p>Bájalo desde esta web al ordenador.</p></li>
+    <li><h3>Cópialo al pendrive</h3><p>Sirve cualquier pendrive. Pon el archivo en la raíz.</p></li>
+    <li><h3>Instálalo en la tele</h3><p>Conecta el pendrive, abre el archivo y permite instalar apps de origen desconocido.</p></li>
+    <li><h3>Conecta tu mando y juega</h3><p>Por Bluetooth o USB. La app lo detecta sola.</p></li>
+  </ol>
+</section>
+
+<section class="blk" id="faq">
+  <div class="faq-head"><div class="qblock" aria-hidden="true">?</div><h2>Preguntas frecuentes</h2></div>
+  <details><summary>¿En qué televisores funciona?</summary><p>En Android TV, Google TV y Fire TV. Las teles Samsung (Tizen) y LG (webOS) no instalan APKs.</p></details>
+  <details><summary>¿Qué mandos puedo usar?</summary><p>Cualquier mando Bluetooth o USB compatible con Android: Xbox, PlayStation, 8BitDo y similares. También sirve un teclado.</p></details>
+  <details><summary>¿Los juegos vienen incluidos?</summary><p>No. Tú añades los tuyos desde el pendrive o una carpeta de la tele. También puedes descargar juegos homebrew y de dominio público desde la propia app.</p></details>
+  <details><summary>¿Necesito BIOS?</summary><p>Algunos sistemas la necesitan para funcionar bien. Tienes que aportar la tuya o usar la alternativa libre que incluye la app, que es menos compatible.</p></details>
+  <details><summary>¿Puedo guardar la partida?</summary><p>Sí. Hay guardado rápido y guardado normal por cada juego, en la memoria de la tele.</p></details>
+  <details><summary>Aparece un aviso de seguridad al instalar. ¿Es normal?</summary><p>Sí, Android avisa con cualquier app que no viene de la tienda. Comprueba que el archivo lo descargaste de esta web.</p></details>
+</section>
+
+<footer><p>PixelBox · proyecto de ejemplo</p></footer>
+</main>
+
+<dialog id="dlg" aria-labelledby="dt">
+  <h3 id="dt"></h3>
+  <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><div id="fill"></div></div>
+  <p class="msg" id="msg"></p>
+  <div class="btns"><button class="btn" id="play" disabled>▶ Jugar</button><button class="btn alt" id="close">Cerrar</button></div>
+</dialog>
+
+<script>
+const SYS=[
+ {n:'Disco 32 bits',c:'#0a9be0',h:210,g:['Kart Cometa','Capitán Nebulosa','Zorro Zafiro','Ciudad Neón']},
+ {n:'Cartucho 64 bits',c:'#e8321a',h:5,g:['Súper Rana','Mundo Mini','Drako Rojo','Pista Turbo']},
+ {n:'16 bits',c:'#ffc800',h:48,g:['Ninja Tofu','Bolas Burbuja','Isla Pixel','Guerra de Pelusas']},
+ {n:'8 bits',c:'#3aaa35',h:120,g:['Caballero Lata','Robot Pepe','Selva Cuadrada','Pingüino Loco']},
+ {n:'Portátil',c:'#c05cff',h:285,g:['Mini Monstruos','Laberinto Luz','Piloto Pocho','Gato Saltarín']},
+ {n:'Arcade',c:'#ff7a1a',h:25,g:['Pixel Brawl','Asalto Alien','Coin Rush','Calle de Fuego']}
+];
+const $=s=>document.querySelector(s);
+// logo
+const L=['PIXEL','BOX'];$('#logo').innerHTML=L.map(w=>[...w].map(ch=>`<span>${ch}</span>`).join('')).join('<br>');
+// cover art (original, generated)
+function cover(t,h,i){
+ const w=t.split(' '),lines=[];let cur='';
+ w.forEach(x=>{if((cur+' '+x).trim().length>9&&cur){lines.push(cur);cur=x}else cur=(cur+' '+x).trim()});lines.push(cur);
+ const a=`hsl(${h} 80% 52%)`,b=`hsl(${(h+50)%360} 85% 22%)`,s=`hsl(${(h+160)%360} 90% 62%)`;
+ const shapes=[
+  `<circle cx="100" cy="95" r="52" fill="${s}"/><rect x="0" y="130" width="200" height="40" fill="${b}" opacity=".7"/>`,
+  `<polygon points="100,30 160,140 40,140" fill="${s}"/><polygon points="100,60 135,125 65,125" fill="${a}"/>`,
+  `<rect x="45" y="45" width="110" height="90" fill="${s}"/><rect x="65" y="65" width="70" height="50" fill="${b}"/><rect x="85" y="85" width="30" height="10" fill="${s}"/>`,
+  `<path d="M0 140 L50 80 L90 120 L140 50 L200 130 V170 H0Z" fill="${s}"/><circle cx="150" cy="40" r="18" fill="#fff"/>`
+ ];
+ const tx=lines.map((l,k)=>`<text x="100" y="${196+k*20}" text-anchor="middle">${l}</text>`).join('');
+ return `<svg viewBox="0 0 200 270" role="img" aria-label="Carátula de ${t}"><defs><linearGradient id="g${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs>
+ <rect width="200" height="270" fill="url(#g${i})"/>${shapes[i%4]}
+ <rect x="0" y="170" width="200" height="100" fill="#000" opacity=".55"/>
+ <g font-family="'Press Start 2P',monospace" font-size="15" fill="#fff" stroke="#000" stroke-width="3" paint-order="stroke">${tx}</g></svg>`;
+}
+// render
+let cur=0;
+function showSys(k){
+ cur=k;const s=SYS[k];
+ document.querySelectorAll('.tab').forEach((t,j)=>t.setAttribute('aria-selected',j===k));
+ $('#sysName').textContent=s.n;$('#sysInfo').textContent=s.g.length+' juegos de ejemplo';
+ $('#grid').innerHTML=s.g.map((t,i)=>`<button class="game" role="listitem" data-t="${t}">${cover(t,s.h,k*10+i)}<b>${t}</b><small>${s.n}</small></button>`).join('');
+}
+$('#tabs').innerHTML=SYS.map((s,k)=>`<button class="tab" role="tab" style="--c:${s.c}" data-k="${k}">${s.n}</button>`).join('');
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b)showSys(+b.dataset.k)});
+showSys(0);
+
+// download demo
+let timer;
+const dlg=$('#dlg');
+$('#grid').addEventListener('click',e=>{const b=e.target.closest('.game');if(!b)return;
+ $('#dt').textContent=b.dataset.t;$('#msg').textContent='Descargando al almacenamiento de la tele…';
+ $('#play').disabled=true;$('#fill').style.width='0';let p=0;dlg.showModal();clearInterval(timer);
+ timer=setInterval(()=>{p+=Math.random()*14+4;if(p>=100){p=100;clearInterval(timer);$('#msg').textContent='Listo. Pulsa A para jugar. (Demo: aquí se abriría el emulador.)';$('#play').disabled=false;$('#play').focus()}
+  $('#fill').style.width=p+'%';dlg.querySelector('[role=progressbar]').setAttribute('aria-valuenow',Math.round(p))},260)});
+$('#close').onclick=()=>{clearInterval(timer);dlg.close()};
+$('#play').onclick=()=>{$('#msg').textContent='Demo: el emulador se lanzaría ahora.'};
+$('#coin').onclick=()=>$('#como').scrollIntoView({behavior:'smooth'});
+
+// keyboard / gamepad navigation across the grid
+function move(d){
+ const items=[...document.querySelectorAll('.game')];if(!items.length)return;
+ let i=items.indexOf(document.activeElement);if(i<0){items[0].focus();return}
+ const cols=Math.max(1,Math.round($('#grid').clientWidth/items[0].offsetWidth));
+ const n=d==='l'?i-1:d==='r'?i+1:d==='u'?i-cols:i+cols;
+ if(items[n])items[n].focus();
+}
+addEventListener('keydown',e=>{if(dlg.open)return;const m={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'u',ArrowDown:'d'}[e.key];
+ if(m&&document.activeElement.classList.contains('game')){e.preventDefault();move(m)}});
+let last=0;
+function pad(){const g=(navigator.getGamepads?navigator.getGamepads():[])[0];
+ if(g){const now=performance.now(),x=g.axes[0]||0,y=g.axes[1]||0;
+  if(now-last>180){let d=null;
+   if(g.buttons[14]?.pressed||x<-.6)d='l';else if(g.buttons[15]?.pressed||x>.6)d='r';else if(g.buttons[12]?.pressed||y<-.6)d='u';else if(g.buttons[13]?.pressed||y>.6)d='d';
+   if(d){move(d);last=now}
+   else if(g.buttons[0]?.pressed){(dlg.open?$('#play'):document.activeElement)?.click();last=now}
+   else if(g.buttons[1]?.pressed&&dlg.open){$('#close').click();last=now}}}
+ requestAnimationFrame(pad)}
+requestAnimationFrame(pad);
+</script>
+</body>
+</html>

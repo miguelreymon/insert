@@ -1,0 +1,6 @@
+{
+  "name": "Insert Coins",
+  "description": "Launcher retro de juegos para Android TV",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
